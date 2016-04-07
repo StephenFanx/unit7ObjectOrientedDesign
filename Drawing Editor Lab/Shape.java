@@ -4,8 +4,8 @@ import java.awt.*;
 /**
  * Abstract class Shape - write a description of the class here
  * 
- * @author (your name here)
- * @version (version number or date here)
+ * @author Stephen Fan
+ * @version 4/7
  */
 public abstract class Shape
 {
@@ -16,6 +16,7 @@ public abstract class Shape
     
     public Shape(Point2D.Double center, double radius, Color color)
     {
+        //instance variables
         this.center = center;
         this.radius = radius;
         this.color = color;
@@ -25,11 +26,11 @@ public abstract class Shape
      * An example of a method - replace this comment with your own
      * 
      * @param  y    a sample parameter for a method
-     * @return        the sum of x and y 
+     * @return        the center point as a Point2D.Double
      */
     public Point2D.Double getCenter()
     {
-        // put your code here
+        // returns center
         return this.center;
     }
     
@@ -37,7 +38,7 @@ public abstract class Shape
      * An example of a method - replace this comment with your own
      *
      * @param  y   a sample parameter for a method
-     * @return     the sum of x and y
+     * @return     the radius as a double
      */
     public double getRadius()
     {
@@ -45,6 +46,12 @@ public abstract class Shape
         return this.radius;
     }
     
+       /**
+     * An example of a method - replace this comment with your own
+     *
+     * @param  y   a sample parameter for a method
+     * @return     the current color as a Color
+     */
     public Color getColor()
     {
         return this.color;
@@ -53,24 +60,22 @@ public abstract class Shape
     /**
      * An example of a method - replace this comment with your own
      *
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y
+     * @param  y   the number of spaces moved
      */
     public void move(double x, double y)
     {
-        // put your code here
+        // moves the shape a number of spaces
         this.center.setLocation((this.center.getX() + x), (this.center.getY() + y));
     }
 
     /**
      * An example of a method - replace this comment with your own
      *
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y
+     * @param  y   the intended radius
      */
     public void setRadius(double r)
     {
-        // put your code here
+        // sets the radius to the intended radius
         this.radius = r;
     }
     public abstract boolean isInside(Point2D.Double point);

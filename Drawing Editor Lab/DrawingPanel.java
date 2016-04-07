@@ -8,8 +8,8 @@ import java.util.Random;
 /**
  * Write a description of class DrawingPanel here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Stephen Fan 
+ * @version 4/7
  */
 public class DrawingPanel extends JPanel
 {
@@ -18,43 +18,50 @@ public class DrawingPanel extends JPanel
     private Shape activeShape;
     private Color color;
     private Dimension dimension;
+    
     /**
      * Default constructor for objects of class DrawingPanel
      */
     public DrawingPanel()
     {
-        // initialise instance variables
+        //sets background color to white
         this.setBackground(Color.WHITE);
         
+        //sets current color to default (black)
         this.color = Color.BLACK;
+        
+        //initializes preferred size
         dimension = new Dimension(800,800);
         
+        // initialise instance variables
         shapeList = new ArrayList<Shape>();
         this.activeShape = null;
         this.setSize(this.dimension);
         
+        //adds mouse listeners
         this.addMouseListener(new MousePressListener());
         this.addMouseMotionListener(new MouseMoveListener());
     }
     
     public void pickColor(){
+        //allows the user to pick a color to draw with
         this.color = JColorChooser.showDialog(null, "Pick a color", Color.BLACK);
     }
     
     public Dimension getPreferredSize()
     {
+        //returns my preferred frame size
         return this.dimension;
     }
     
     /**
      * An example of a method - replace this comment with your own
      *
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y
+     * @return     current color
      */
     public Color getColor()
     {
-        // put your code here
+        // returns the current color as a Color
         return this.color;
     }
 
@@ -72,15 +79,22 @@ public class DrawingPanel extends JPanel
      */
     public void addCircle()
     {
-        // put your code here
+        // adds a circle to the drawing editor
+        //calculates the center point
         double xofCenter = this.getPreferredSize().getWidth()/2;
         double yofCenter = this.getPreferredSize().getHeight()/2;
         Point2D.Double center = new Point2D.Double(xofCenter, yofCenter);
+        
+        //gets a random radius
         double radius = Math.random()*50 + 50;
         
+        //initializes a circle
         Circle circle = new Circle(center, radius, this.color);
+        
+        //adds it to shapeList
         this.shapeList.add(circle);
         
+        //makes the new circle the active shape
         this.activeShape = circle;
         
         repaint();
@@ -99,15 +113,22 @@ public class DrawingPanel extends JPanel
      */
     public void addSquare()
     {
-        // put your code here
+        // adds a square to the drawing editor
+        //calculates the center point
         double xofCenter = this.getPreferredSize().getWidth()/2;
         double yofCenter = this.getPreferredSize().getHeight()/2;
         Point2D.Double center = new Point2D.Double(xofCenter, yofCenter);
+        
+        //gets a random radius
         double radius = Math.random()*50 + 50;
         
+        //initializes a square
         Square square = new Square(center, radius, this.color);
+        
+        //adds the square to shapeList
         this.shapeList.add(square);
         
+        //makes the square the active shape
         this.activeShape = square;
         
         repaint();
@@ -116,12 +137,11 @@ public class DrawingPanel extends JPanel
     /**
      * An example of a method - replace this comment with your own
      *
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y
+     * @param  y   Graphics object
      */
     public void paintComponent(Graphics g)
     {
-        // put your code here
+        // paints the picture
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         
@@ -145,6 +165,9 @@ public class DrawingPanel extends JPanel
     {
         public void mousePressed(MouseEvent event)
         {
+            //changes the active shape to the shape the user clicks on
+            //if the user did not click on a shape, makes the active shape = null
+            
             activeShape = null;
             Point2D.Double point = new Point2D.Double(event.getX(), event.getY());
             
@@ -171,6 +194,7 @@ public class DrawingPanel extends JPanel
          */
         public void mouseDragged(MouseEvent event)
         {
+            //allows the user to move the active shape
             if (activeShape != null)
             {
                  Point2D.Double center = activeShape.getCenter();

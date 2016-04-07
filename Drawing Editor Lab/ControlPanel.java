@@ -5,8 +5,8 @@ import java.awt.event.*;
 /**
  * Write a description of class ControlPanel here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Stephen Fan
+ * @version 4/7
  */
 public class ControlPanel extends JPanel
 {
@@ -32,12 +32,15 @@ public class ControlPanel extends JPanel
         
         this.canvas = dpanel;
         
+        //adds buttons
         this.add(colorButton);
         this.add(circleButton);
         this.add(squareButton);
         
+        //sets the background
         this.panel.setBackground(this.canvas.getColor());
         
+        //adds listeners
         colorButton.addActionListener(new ButtonListener());
         circleButton.addActionListener(new ButtonListener());
         squareButton.addActionListener(new ButtonListener());
@@ -52,21 +55,18 @@ public class ControlPanel extends JPanel
         {
             if (event.getSource().equals(colorButton))
             {
-                //If the "Pick Color" button was clicked, allow the 
-                //user to pick a drawing color
+                //allows the user to pick a color
                 canvas.pickColor();
                 panel.setBackground(canvas.getColor());
             }
             else if (event.getSource().equals(circleButton))
             {
-                //If the "Add Circle" button was clicked, add a 
-                //circle to the canvas
+                //allows the user to add a circle to the drawing editor
                 canvas.addCircle();
             }
             else if (event.getSource().equals(squareButton))
             {
-                //If the "Add Square" button was clicked, add a 
-                //square to the canvas
+                //allows the user to add a square to the drawing editor
                 canvas.addSquare();
             }
         }

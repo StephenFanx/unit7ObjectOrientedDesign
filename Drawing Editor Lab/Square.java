@@ -4,26 +4,27 @@ import java.awt.*;
 /**
  * Write a description of class Square here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Stephen Fan
+ * @version 4/7
  */
 public class Square extends Shape
 {
     // instance variables - replace the example below with your own
     public Square(Point2D.Double center, double radius, Color color)
     {
+        //subclass of Shape; need to use its super class
         super(center, radius, color);
     }
     
     /**
      * An example of a method - replace this comment with your own
      * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
+     * @param  y   any Point2D.Double point that is within the range of the canvas
+     * @return     true or false depending on if the point is inside or not
      */
     public boolean isInside(Point2D.Double point)
     {
-        // put your code here
+        // checks if a point is inside the square, returns true or false depending on results
         Rectangle2D.Double square = new Rectangle2D.Double(this.getCenter().getX() - this.getRadius(), this.getCenter().getY() - this.getRadius(), 2*this.getRadius(), 2*this.getRadius());
         return square.contains(point);
     }
@@ -31,8 +32,7 @@ public class Square extends Shape
     /**
      * An example of a method - replace this comment with your own
      *
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y
+     * @param  y   Graphics2D and true or false depending on whether it is filled or not
      */
     public void draw(Graphics2D g2, boolean filled)
     {
@@ -40,7 +40,7 @@ public class Square extends Shape
         double xofTopLeft = this.getCenter().getX() - this.getRadius();
         double yofTopLeft = this.getCenter().getY() - this.getRadius();
         
-        //Calculates the "diameter" of the square, or its length
+        //Calculates the "diameter" of the square, or its side length
         double diameter = this.getRadius() * 2;
         
         //Initializes the square to a new rectangle
