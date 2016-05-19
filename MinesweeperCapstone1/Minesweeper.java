@@ -146,6 +146,23 @@ public class MineSweeper extends World<Actor>
             grid.put(locClicked,eight);
         }
         
+        int winner = 0;
+        for (int row = 0; row < grid.getNumRows(); row++)
+        {
+            for (int col = 0; col < grid.getNumCols(); col++)
+            {
+                Location loc = new Location (row, col);
+                if (grid.get(loc) instanceof NoMineTile)
+                {
+                    winner++;
+                }
+            }
+        }
+        
+        if (winner > 0)
+        {
+            System.out.println("You win! :)");
+        }
         return b;
     }
 
