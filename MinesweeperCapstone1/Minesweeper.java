@@ -1,143 +1,163 @@
 import info.gridworld.actor.Actor;
 import info.gridworld.actor.ActorWorld;
-import info.gridworld.actor.Rock;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Location;
+import info.gridworld.world.World;
+import java.util.ArrayList;
 
 /**
- * Game of Life starter code. Demonstrates how to create and populate the game using the GridWorld framework.
- * Also demonstrates how to provide accessor methods to make the class testable by unit tests.
+ * Write a description of class NewGridWorld here.
  * 
- * @author @gcschmit
- * @version 18 July 2014
+ * @author (your name) 
+ * @version (a version number or a date)
  */
-public class Minesweeper
+public class MineSweeper extends World<Actor>
 {
-    // the world comprised of the grid that displays the graphics for the game
-    private ActorWorld world;
-    
-    // the game board will have 5 rows and 5 columns
-    private final int ROWS = 20;
-    private final int COLS = 20;
+    /** description of instance variable x (add comment for each instance variable) */
     
     /**
-     * Default constructor for objects of class Minesweeper
-     * 
-     * @post    the game will be initialized with a screen of blank tiles
-     * 
+     * Default constructor for objects of class NewGridWorld
      */
-    public Minesweeper()
+    public MineSweeper(Grid<Actor> grid)
     {
-        // create the grid, of the specified size, that contains Actors
-        BoundedGrid<Actor> grid1 = new BoundedGrid<Actor>(ROWS, COLS);
-        BoundedGrid<Actor> grid2 = new BoundedGrid<Actor>(ROWS, COLS);
+        // initialise instance variables
+        super(grid);
+        for(int row = 0; row < this.getGrid().getNumRows(); row++)
+        {
+            for (int col = 0; col < this.getGrid().getNumCols(); col++)
+            {
+                Location loc = new Location(row, col);
+                this.add(loc,new NoMineTile());
+            }
+        }
         
-        // create a world based on the grid
-        world = new ActorWorld(grid1);
-        
-        // populate the game
-        populateGame();
-        
-        // display the newly constructed and populated world
-        world.show();
-        
-    }
-    
-    /**
-     * Creates the actors and inserts them into their initial starting positions in the grid
-     *
-     * @pre     the grid has been created
-     * @post    all actors that comprise the initial state of the game have been added to the grid
-     * 
-     */
-    private void populateGame()
-    {
-        // random locations of mines
-        final int column1 = (int)((Math.random()*COLS) + 1), row1 = (int)((Math.random()*ROWS) + 1);
-        final int column2 = (int)((Math.random()*COLS) + 1), row2 = (int)((Math.random()*ROWS) + 1);
-        final int column3 = (int)((Math.random()*COLS) + 1), row3 = (int)((Math.random()*ROWS) + 1);
-        final int column4 = (int)((Math.random()*COLS) + 1), row4 = (int)((Math.random()*ROWS) + 1);
-        final int column5 = (int)((Math.random()*COLS) + 1), row5 = (int)((Math.random()*ROWS) + 1);
-        final int column6 = (int)((Math.random()*COLS) + 1), row6 = (int)((Math.random()*ROWS) + 1);
-        final int column7 = (int)((Math.random()*COLS) + 1), row7 = (int)((Math.random()*ROWS) + 1);
-        final int column8 = (int)((Math.random()*COLS) + 1), row8 = (int)((Math.random()*ROWS) + 1);
-        final int column9 = (int)((Math.random()*COLS) + 1), row9 = (int)((Math.random()*ROWS) + 1);
-        final int column10 = (int)((Math.random()*COLS) + 1), row10 = (int)((Math.random()*ROWS) + 1);
-        final int column11 = (int)((Math.random()*COLS) + 1), row11 = (int)((Math.random()*ROWS) + 1);
-        final int column12 = (int)((Math.random()*COLS) + 1), row12 = (int)((Math.random()*ROWS) + 1);
-        final int column13 = (int)((Math.random()*COLS) + 1), row13 = (int)((Math.random()*ROWS) + 1);
-        final int column14 = (int)((Math.random()*COLS) + 1), row14 = (int)((Math.random()*ROWS) + 1);
-        final int column15 = (int)((Math.random()*COLS) + 1), row15 = (int)((Math.random()*ROWS) + 1);
-        final int column16 = (int)((Math.random()*COLS) + 1), row16 = (int)((Math.random()*ROWS) + 1);
-        final int column17 = (int)((Math.random()*COLS) + 1), row17 = (int)((Math.random()*ROWS) + 1);
-
-        // the grid of Actors that maintains the state of the game
-        //  (alive cells contains actors; dead cells do not)
-        Grid<Actor> grid1 = world.getGrid();
-        Grid<Actor> grid2 = world.getGrid();
+        for(int i = 0; i < 21; i++)
+        {
+            Location loc = new Location((int)(Math.random()*this.getGrid().getNumRows()), (int)(Math.random()*this.getGrid().getNumCols()));
+            this.remove(loc);
+            this.add(loc, new MineTile());
+        }
     }
 
     /**
-     * Generates the next generation based on the rules of the Game of Life and updates the grid
-     * associated with the world
+     * An example of a method - replace this comment with your own
+     *    that describes the operation of the method
      *
-     * @pre     the game has been initialized
-     * @post    the world has been populated with a new grid containing the next generation
-     * 
+     * @pre        preconditions for the method
+     *            (what the method assumes about the method's parameters and class's state)
+     * @post    postconditions for the method
+     *            (what the method guarantees upon completion)
+     * @param    y    description of parameter y
+     * @return    description of the return value
      */
-    public void checkTile()
+    public boolean locationClicked(Location locClicked)
     {
-        // create the grid, of the specified size, that contains Actors
-        Grid<Actor> grid1 = world.getGrid();
-        Grid<Actor> grid2 = world.getGrid();
+        // put your code here
+        Grid grid = this.getGrid();
+        ArrayList<Location> occupiedList = grid.getOccupiedAdjacentLocations(locClicked);
+        int minecount = 0;
+        boolean b = false;
         
+        for(int i = 0; i < occupiedList.size(); i++)
+        {
+            if (grid.get(occupiedList.get(i)) instanceof MineTile == true)
+            {
+                minecount++;
+            }
+        }
         
-    }
-    
-    /**
-     * Returns the actor at the specified row and column. Intended to be used for unit testing.
-     *
-     * @param   row the row (zero-based index) of the actor to return
-     * @param   col the column (zero-based index) of the actor to return
-     * @pre     the grid has been created
-     * @return  the actor at the specified row and column
-     */
-    public Actor getActor(int row, int col)
-    {
-        Location loc = new Location(row, col);
-        Actor actor = world.getGrid().get(loc);
-        return actor;
+        if (grid.get(locClicked) instanceof One || grid.get(locClicked) instanceof Two || grid.get(locClicked) instanceof Three || 
+        grid.get(locClicked) instanceof Four || grid.get(locClicked) instanceof Five || grid.get(locClicked) instanceof Six || 
+        grid.get(locClicked) instanceof Seven || grid.get(locClicked) instanceof Eight || grid.get(locClicked) instanceof Kaboom)
+        {}
+        else if(grid.get(locClicked) instanceof MineTile)
+        {
+            Kaboom kaboom = new Kaboom();
+            grid.remove(locClicked);
+            grid.put(locClicked,kaboom);
+            
+            for(int row = 0; row < grid.getNumRows(); row++)
+            {
+                for (int col = 0; col < grid.getNumCols(); col++)
+                {
+                    Location loc = new Location(row, col);
+                    if (grid.get(loc) instanceof MineTile)
+                    {
+                        grid.remove(loc);
+                        grid.put(loc,new Kaboom());
+                    }
+                }
+            }
+            
+            b = true;
+            System.out.println("You lose :(");
+        }
+        else if (minecount == 0)
+        {
+            grid.remove(locClicked);
+        }
+        else if (minecount == 1)
+        {
+            One one = new One();
+            grid.remove(locClicked);
+            grid.put(locClicked,one);
+        }
+        else if (minecount == 2)
+        {
+            Two two = new Two();
+            grid.remove(locClicked);
+            grid.put(locClicked,two);
+        }
+        else if (minecount == 3)
+        {
+            Three three = new Three();
+            grid.remove(locClicked);
+            grid.put(locClicked,three);
+        }
+        else if (minecount == 4)
+        {
+            Four four = new Four();
+            grid.remove(locClicked);
+            grid.put(locClicked,four);
+        }
+        else if (minecount == 5)
+        {
+            Five five = new Five();
+            grid.remove(locClicked);
+            grid.put(locClicked,five);
+        }
+        else if (minecount == 6)
+        {
+            Six six = new Six();
+            grid.remove(locClicked);
+            grid.put(locClicked,six);
+        }
+        else if (minecount == 7)
+        {
+            Seven seven = new Seven();
+            grid.remove(locClicked);
+            grid.put(locClicked,seven);
+        }
+        else if (minecount == 8)
+        {
+            Eight eight = new Eight();
+            grid.remove(locClicked);
+            grid.put(locClicked,eight);
+        }
+        
+        return b;
     }
 
-    /**
-     * Returns the number of rows in the game board
-     *
-     * @return    the number of rows in the game board
-     */
-    public int getNumRows()
-    {
-        return ROWS;
-    }
-    
-    /**
-     * Returns the number of columns in the game board
-     *
-     * @return    the number of columns in the game board
-     */
-    public int getNumCols()
-    {
-        return COLS;
-    }
-    
-    
-    /**
+     /**
      * Creates an instance of this class. Provides convenient execution.
      *
      */
     public static void main(String[] args)
     {
-        Minesweeper game = new Minesweeper();
+        BoundedGrid<Actor> grid = new BoundedGrid<Actor>(15,15);
+        
+        MineSweeper minesweeper = new MineSweeper(grid);
+        minesweeper.show();
     }
-
 }
